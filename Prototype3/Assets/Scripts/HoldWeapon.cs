@@ -6,6 +6,7 @@ public class HoldWeapon : MonoBehaviour
 {
     // [SerializeField] GameObject player;
     // Start is called before the first frame update
+    KeyCode pickup = KeyCode.E;
     void Start()
     {
 
@@ -20,9 +21,9 @@ public class HoldWeapon : MonoBehaviour
     void OnTriggerEnter2D(Collider2D gun)
     {
      
-        if (gun.gameObject.tag == "player" && Input.GetKeyDown("E"))
+        if (gun.gameObject.tag == "player" /*&& Input.GetKeyDown(pickup)*/) //code commented out is for "pick up when key is pressed"
          {
-          gun.transform.parent = gameObject.transform;
+          gameObject.transform.parent = gun.transform;
         }
     }
 }

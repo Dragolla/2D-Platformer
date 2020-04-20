@@ -10,7 +10,6 @@ TagManager:
   - NoFollowEnemy
   - Bullet
   - CoolMoveBox
-  - Weapon
   layers:
   - Default
   - TransparentFX

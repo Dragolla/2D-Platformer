@@ -77,7 +77,8 @@ public class Player : MonoBehaviour
     private void Death()
     {// if the player touches the red block, then kill the player by setting the current state (isalive) to false
         //and also add a dramatic death, by flinging the player away when they touch the red
-        if (bodycollider.IsTouchingLayers(LayerMask.GetMask("Trap"))&&!HasWon)//added !HasWon so that it only says "you have died" only if the player has not died yet
+        // I made it so that until we fix the really strange collider system, at least the deathzones are guaranteed to kill the player, as the collision doesnt need to choose between the players colliders
+        if (myFeet.IsTouchingLayers(LayerMask.GetMask("Trap"))&&!HasWon || bodycollider.IsTouchingLayers(LayerMask.GetMask("Trap")) && !HasWon)//added !HasWon so that it only says "you have died" only if the player has not died yet
         {
             IsAlive = false;
             GetComponent<Rigidbody2D>().velocity = deathfling;
@@ -100,6 +101,8 @@ public class Player : MonoBehaviour
     {    //only allow the player to jump once. if the player is NOT touching the ground, then dont let him jump 
         //otherwise, if the player DOES have their feet on the ground, then proceed to the next line of code and let the player jump
         // ok so I added a double jump which was pretty ez to do, but a problem I noticed is the jump force gets added between 2 jumps which is kinda weird, so that could be fixed
+        //I made some severely needed adjustments to the double jump mechanic, which now resets your vector when you jump so excess momentum and stuff is not possible to be carried through the double jump. I also made a check so that we can adjust the double jumps height in relation to a single jump. This adjusment will also allow us to animate wings, or a push of air for the double jump becuase the two are hopefully differentiated
+
         if (myFeet.IsTouchingLayers(LayerMask.GetMask("ground")))
         {
             doubleJump = 2;
@@ -110,9 +113,20 @@ public class Player : MonoBehaviour
         }
         if (Input.GetButtonDown("Vertical"))
         {
+            myrigidbody.velocity = new Vector2(0f, 0f);
 
-            Vector2 jumpVelocityToAdd = new Vector2(player.transform.rotation.y, jumpSpeed);
-            myrigidbody.velocity += jumpVelocityToAdd;
+            if (doubleJump == 2)
+            {
+                Vector2 jumpVelocityToAdd = new Vector2(player.transform.rotation.y, jumpSpeed);
+                myrigidbody.velocity += jumpVelocityToAdd;
+            }
+            if (doubleJump == 1)
+            {
+                Vector2 jumpVelocityToAdd = new Vector2(player.transform.rotation.y, jumpSpeed + 5);
+                myrigidbody.velocity += jumpVelocityToAdd;
+            }  
+            
+            
             doubleJump -= 1;
         }
 

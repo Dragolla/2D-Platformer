@@ -12,7 +12,7 @@ public class Bullet : MonoBehaviour
     {
         transform.Translate(Vector2.right * speed * Time.deltaTime);//bullet movement
     }
-    void OnTriggerEnter2D(Collider2D hit)
+   /* void OnTriggerEnter2D(Collider2D hit)
     {
         FollowEnemy enemy = hit.GetComponent<FollowEnemy>();//access the Following enemy's script
         if(enemy != null) // if the bullet is not NULL/if the bullet hit something 
@@ -20,7 +20,7 @@ public class Bullet : MonoBehaviour
             enemy.TakeDamage(damage); // then take health from the enemy
         }
         Destroy(gameObject);//then destroy the bullet
-;    }
+        }*/
     // Update is called once per frame
   
 }
